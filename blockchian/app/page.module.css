@@ -1,0 +1,291 @@
+/* ── Landing Page Styles ───────────────────────────── */
+
+.page {
+  position: relative;
+  overflow: hidden;
+}
+
+/* Particles */
+.particles {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+.particle {
+  position: absolute;
+  background: var(--color-primary);
+  border-radius: 50%;
+  opacity: 0.4;
+  animation: particle-float 6s ease-in-out infinite;
+}
+.particle:nth-child(even) {
+  background: var(--color-secondary);
+}
+
+/* Navigation */
+.nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  padding: 0 40px;
+  height: var(--header-h);
+  display: flex;
+  align-items: center;
+  background: rgba(7, 7, 20, 0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border-subtle);
+}
+.navInner {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 32px;
+}
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  flex-shrink: 0;
+}
+.logoIcon {
+  font-size: 24px;
+  background: var(--grad-primary);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.navLinks {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+  flex: 1;
+  margin-left: 16px;
+}
+.navLinks a {
+  color: var(--text-secondary);
+  font-size: 14px;
+  font-weight: 500;
+  transition: color var(--transition-fast);
+}
+.navLinks a:hover { color: var(--text-primary); }
+.navActions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+}
+
+/* Hero */
+.hero {
+  position: relative;
+  z-index: 1;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 120px 40px 80px;
+  background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(153,69,255,0.15) 0%, transparent 70%),
+              radial-gradient(ellipse 60% 40% at 80% 80%, rgba(20,241,149,0.08) 0%, transparent 60%);
+}
+.heroBadge {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-bottom: 24px;
+  animation: fadeInUp 0.6s ease forwards;
+}
+.heroTitle {
+  font-size: clamp(40px, 8vw, 80px);
+  font-weight: 900;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+  margin-bottom: 24px;
+  animation: fadeInUp 0.6s ease 0.1s both;
+}
+.heroSubtitle {
+  font-size: clamp(16px, 2.5vw, 20px);
+  color: var(--text-secondary);
+  max-width: 620px;
+  line-height: 1.7;
+  margin-bottom: 40px;
+  animation: fadeInUp 0.6s ease 0.2s both;
+}
+.heroActions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-bottom: 40px;
+  animation: fadeInUp 0.6s ease 0.3s both;
+}
+.heroChips {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+  justify-content: center;
+  animation: fadeInUp 0.6s ease 0.4s both;
+}
+.heroChips span {
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+/* Container */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 40px;
+  position: relative;
+  z-index: 1;
+}
+
+.sectionTitle {
+  text-align: center;
+  margin-bottom: 12px;
+}
+
+/* How it Works */
+.howSection {
+  padding: 100px 0;
+  background: linear-gradient(180deg, transparent, rgba(153,69,255,0.05), transparent);
+}
+.steps {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 16px;
+  margin-top: 48px;
+}
+.stepCard {
+  padding: 28px 20px;
+  text-align: center;
+  transition: all var(--transition-slow);
+}
+.stepCard:hover { transform: translateY(-4px); }
+.stepNum {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--color-primary);
+  letter-spacing: 0.1em;
+  margin-bottom: 12px;
+}
+.stepIcon {
+  font-size: 32px;
+  margin-bottom: 12px;
+}
+.stepCard h3 {
+  font-size: 14px;
+  font-weight: 700;
+  margin-bottom: 8px;
+  color: var(--text-primary);
+}
+.stepCard p {
+  font-size: 12px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+/* Features */
+.featuresSection { padding: 100px 0; }
+.featureCard { padding: 32px; transition: all var(--transition-slow); }
+.featureIcon { font-size: 40px; margin-bottom: 16px; }
+
+/* Stats */
+.statsSection {
+  padding: 80px 0;
+  background: radial-gradient(ellipse 70% 50% at 50% 50%, rgba(153,69,255,0.1) 0%, transparent 70%);
+}
+.statsGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 32px;
+  text-align: center;
+}
+.statItem {
+  padding: 32px 20px;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  background: var(--grad-card);
+  backdrop-filter: blur(10px);
+}
+.statNum {
+  font-size: clamp(36px, 5vw, 56px);
+  font-weight: 900;
+  background: var(--grad-primary);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  line-height: 1;
+  margin-bottom: 8px;
+  font-family: var(--font-mono);
+}
+.statLabel {
+  font-size: 14px;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+/* CTA */
+.ctaSection { padding: 100px 0; }
+.ctaBox {
+  text-align: center;
+  padding: 80px 40px;
+  background: var(--grad-card);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-xl);
+  backdrop-filter: blur(20px);
+  position: relative;
+  overflow: hidden;
+}
+.ctaBox::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60%;
+  height: 1px;
+  background: var(--grad-primary);
+}
+
+/* Footer */
+.footer { padding: 48px 0 32px; border-top: 1px solid var(--border-subtle); }
+.footerInner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .steps { grid-template-columns: repeat(3, 1fr); }
+  .statsGrid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 768px) {
+  .nav { padding: 0 20px; }
+  .navLinks { display: none; }
+  .hero { padding: 100px 20px 60px; }
+  .container { padding: 0 20px; }
+  .steps { grid-template-columns: 1fr 1fr; }
+  .statsGrid { grid-template-columns: repeat(2, 1fr); }
+  .footerInner { flex-direction: column; gap: 16px; text-align: center; }
+}
+@media (max-width: 480px) {
+  .steps { grid-template-columns: 1fr; }
+  .statsGrid { grid-template-columns: 1fr 1fr; }
+}

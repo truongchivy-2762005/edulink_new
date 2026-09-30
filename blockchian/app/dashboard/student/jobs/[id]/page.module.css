@@ -1,0 +1,57 @@
+.page { max-width: 1100px; }
+.loading, .notFound { min-height: 60vh; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px; color: var(--text-secondary); }
+.spin { animation: spin 1s linear infinite; }
+
+.backBtn {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-size: 13px; color: var(--text-secondary);
+  margin-bottom: 24px; cursor: pointer; background: none; border: none;
+  transition: color var(--transition-fast);
+}
+.backBtn:hover { color: var(--text-primary); }
+
+.layout { display: grid; grid-template-columns: 1fr 320px; gap: 24px; align-items: start; }
+
+/* Job header card */
+.jobHeader { padding: 28px; }
+.companyRow { display: flex; align-items: flex-start; gap: 16px; margin-bottom: 20px; }
+.companyLogo { width: 56px; height: 56px; border-radius: var(--radius-md); border: 1px solid var(--border-subtle); flex-shrink: 0; }
+.jobTitle { font-size: 22px; font-weight: 800; letter-spacing: -0.02em; margin-bottom: 4px; line-height: 1.3; }
+.jobCompany { font-size: 14px; color: var(--text-muted); }
+
+.matchSection { margin-bottom: 20px; }
+.matchHeader { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+.matchLabel { font-size: 12px; color: var(--text-secondary); }
+.matchPct { font-size: 14px; font-weight: 700; color: var(--color-secondary); }
+.matchBarBig { height: 6px; background: rgba(255,255,255,0.06); border-radius: var(--radius-pill); overflow: hidden; }
+.matchFillBig { height: 100%; background: var(--grad-primary); border-radius: var(--radius-pill); transition: width 1s ease; }
+
+.metaChips { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.chip { display: flex; align-items: center; gap: 6px; font-size: 13px; color: var(--text-secondary); padding: 5px 12px; background: rgba(255,255,255,0.04); border: 1px solid var(--border-subtle); border-radius: var(--radius-pill); }
+
+.sectionTitle { font-size: 16px; font-weight: 700; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+.descCard, .skillsCard, .sbtCard { padding: 24px; margin-top: 16px; }
+.desc { color: var(--text-secondary); font-size: 14px; line-height: 1.8; }
+.skillsList { display: flex; flex-wrap: wrap; gap: 8px; }
+.sbtNote { color: var(--text-secondary); font-size: 13px; margin-bottom: 12px; }
+.sbtItem { display: flex; align-items: center; gap: 8px; padding: 8px 12px; background: rgba(20,241,149,0.06); border-radius: var(--radius-sm); font-size: 13px; color: var(--text-primary); margin-top: 6px; }
+
+/* Sidebar */
+.sidebar { display: flex; flex-direction: column; gap: 16px; position: sticky; top: 24px; }
+.budgetCard { padding: 24px; text-align: center; }
+.budgetLabel { font-size: 12px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 8px; }
+.budgetNum { font-size: 48px; font-weight: 900; font-family: var(--font-mono); background: var(--grad-primary); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; line-height: 1; }
+.budgetToken { font-size: 14px; color: var(--text-muted); margin-top: 4px; }
+.budgetInfo { display: flex; flex-direction: column; gap: 8px; text-align: left; }
+.budgetRow { display: flex; justify-content: space-between; font-size: 13px; color: var(--text-secondary); }
+.escrowNote { display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--color-secondary); background: rgba(20,241,149,0.08); padding: 10px; border-radius: var(--radius-sm); border: 1px solid var(--border-green); }
+
+.appliedBox { text-align: center; padding: 24px; background: rgba(20,241,149,0.08); border: 1px solid var(--border-green); border-radius: var(--radius-lg); }
+.appliedBox h3 { font-size: 18px; font-weight: 700; color: var(--color-secondary); margin: 12px 0 8px; }
+.appliedBox p { font-size: 13px; color: var(--text-secondary); }
+
+.deadlineCard { padding: 16px 20px; }
+.deadlineLabel { font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 6px; }
+.deadlineDate { font-size: 14px; font-weight: 600; color: var(--text-primary); text-transform: capitalize; }
+
+@media (max-width: 900px) { .layout { grid-template-columns: 1fr; } .sidebar { position: static; } }

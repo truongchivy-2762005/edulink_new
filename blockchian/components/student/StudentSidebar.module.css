@@ -1,0 +1,172 @@
+/* ── Student Sidebar ──────────────────────────────── */
+
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: var(--sidebar-w);
+  background: var(--bg-card);
+  border-right: 1px solid var(--border-subtle);
+  display: flex;
+  flex-direction: column;
+  padding: 24px 0;
+  z-index: 50;
+  overflow-y: auto;
+}
+
+/* Logo */
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 20px 20px;
+  font-size: 18px;
+  font-weight: 800;
+  border-bottom: 1px solid var(--border-subtle);
+  margin-bottom: 20px;
+}
+
+.logoIcon {
+  font-size: 22px;
+  background: var(--grad-primary);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* User Card */
+.userCard {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  margin: 0 12px 12px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+}
+
+.avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 2px solid var(--color-primary);
+  flex-shrink: 0;
+  object-fit: cover;
+}
+
+.userInfo { flex: 1; min-width: 0; }
+
+.userName {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.userRole { margin-top: 4px; }
+
+/* Wallet Box */
+.walletBox {
+  margin: 0 12px 16px;
+  padding: 12px 14px;
+  background: rgba(20,241,149,0.06);
+  border: 1px solid var(--border-green);
+  border-radius: var(--radius-md);
+}
+
+.walletRow {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 8px;
+}
+
+.walletAddr {
+  font-size: 11px;
+  color: var(--text-muted);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.walletBalance {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+}
+
+.balanceNum {
+  font-size: 20px;
+  font-weight: 800;
+  font-family: var(--font-mono);
+  color: var(--color-secondary);
+}
+
+.balanceToken {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+/* Navigation */
+.nav {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 0 12px;
+}
+
+.navItem {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: var(--radius-md);
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  transition: all var(--transition-fast);
+  position: relative;
+}
+
+.navItem:hover {
+  background: rgba(255,255,255,0.05);
+  color: var(--text-primary);
+}
+
+.navActive {
+  background: rgba(153,69,255,0.12) !important;
+  color: var(--color-primary) !important;
+  font-weight: 600;
+}
+
+.navChevron {
+  margin-left: auto;
+  color: var(--color-primary);
+}
+
+/* Logout */
+.logoutBtn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 24px;
+  margin-top: 16px;
+  font-size: 14px;
+  color: var(--text-muted);
+  transition: color var(--transition-fast);
+  cursor: pointer;
+  background: none;
+  border: none;
+  border-top: 1px solid var(--border-subtle);
+  padding-top: 20px;
+}
+
+.logoutBtn:hover {
+  color: var(--color-danger);
+}

@@ -1,0 +1,100 @@
+{
+  "info": {
+    "_postman_id": "edulink-hub-api",
+    "name": "EduLink Hub API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {"key": "base_url", "value": "http://127.0.0.1:8000/api"},
+    {"key": "employer_token", "value": ""},
+    {"key": "student_token", "value": ""},
+    {"key": "job_id", "value": ""},
+    {"key": "milestone_id", "value": ""},
+    {"key": "escrow_id", "value": ""},
+    {"key": "application_id", "value": ""}
+  ],
+  "item": [
+    {
+      "name": "1. Login employer",
+      "event": [{"listen": "test", "script": {"exec": ["const body = pm.response.json();", "pm.collectionVariables.set('employer_token', body.data.token);"]}}],
+      "request": {
+        "method": "POST",
+        "header": [{"key": "Accept", "value": "application/json"}, {"key": "Content-Type", "value": "application/json"}],
+        "body": {"mode": "raw", "raw": "{\n  \"email\": \"employer@edulink.test\",\n  \"password\": \"Password123!\"\n}"},
+        "url": "{{base_url}}/login"
+      }
+    },
+    {
+      "name": "2. Create job",
+      "event": [{"listen": "test", "script": {"exec": ["const body = pm.response.json();", "pm.collectionVariables.set('job_id', body.data.id);", "pm.collectionVariables.set('milestone_id', body.data.milestones[0].id);"]}}],
+      "request": {
+        "method": "POST",
+        "header": [{"key": "Accept", "value": "application/json"}, {"key": "Content-Type", "value": "application/json"}, {"key": "Authorization", "value": "Bearer {{employer_token}}"}],
+        "body": {"mode": "raw", "raw": "{\n  \"title\": \"Landing page EduLink\",\n  \"description\": \"Xây dựng landing page cho dự án\",\n  \"required_skills\": [\"React\", \"English\"],\n  \"budget\": 100,\n  \"deadline\": \"2026-12-31T23:59:59+07:00\",\n  \"milestones\": [{\"title\": \"Bàn giao\", \"amount\": 100, \"due_date\": \"2026-12-30T23:59:59+07:00\"}]\n}"},
+        "url": "{{base_url}}/jobs"
+      }
+    },
+    {
+      "name": "3. Record escrow",
+      "event": [{"listen": "test", "script": {"exec": ["const body = pm.response.json();", "pm.collectionVariables.set('escrow_id', body.data.id);"]}}],
+      "request": {
+        "method": "POST",
+        "header": [{"key": "Accept", "value": "application/json"}, {"key": "Authorization", "value": "Bearer {{employer_token}}"}],
+        "url": "{{base_url}}/jobs/{{job_id}}/escrow"
+      }
+    },
+    {
+      "name": "4. Verify escrow",
+      "request": {
+        "method": "POST",
+        "header": [{"key": "Accept", "value": "application/json"}, {"key": "Authorization", "value": "Bearer {{employer_token}}"}],
+        "url": "{{base_url}}/escrows/{{escrow_id}}/verify"
+      }
+    },
+    {
+      "name": "5. Match candidates",
+      "event": [{"listen": "test", "script": {"exec": ["const body = pm.response.json();", "pm.collectionVariables.set('application_id', body.data[0].id);"]}}],
+      "request": {
+        "method": "POST",
+        "header": [{"key": "Accept", "value": "application/json"}, {"key": "Authorization", "value": "Bearer {{employer_token}}"}],
+        "url": "{{base_url}}/jobs/{{job_id}}/match"
+      }
+    },
+    {
+      "name": "6. Login student",
+      "event": [{"listen": "test", "script": {"exec": ["const body = pm.response.json();", "pm.collectionVariables.set('student_token', body.data.token);"]}}],
+      "request": {
+        "method": "POST",
+        "header": [{"key": "Accept", "value": "application/json"}, {"key": "Content-Type", "value": "application/json"}],
+        "body": {"mode": "raw", "raw": "{\n  \"email\": \"student@edulink.test\",\n  \"password\": \"Password123!\"\n}"},
+        "url": "{{base_url}}/login"
+      }
+    },
+    {
+      "name": "7. Accept job",
+      "request": {
+        "method": "POST",
+        "header": [{"key": "Accept", "value": "application/json"}, {"key": "Authorization", "value": "Bearer {{student_token}}"}],
+        "url": "{{base_url}}/applications/{{application_id}}/accept"
+      }
+    },
+    {
+      "name": "8. Submit milestone",
+      "request": {
+        "method": "POST",
+        "header": [{"key": "Accept", "value": "application/json"}, {"key": "Content-Type", "value": "application/json"}, {"key": "Authorization", "value": "Bearer {{student_token}}"}],
+        "body": {"mode": "raw", "raw": "{\n  \"work_url\": \"https://github.com/example/edulink-demo\",\n  \"description\": \"Đã hoàn tất sản phẩm\"\n}"},
+        "url": "{{base_url}}/milestones/{{milestone_id}}/submit"
+      }
+    },
+    {
+      "name": "9. Approve and mock release",
+      "request": {
+        "method": "POST",
+        "header": [{"key": "Accept", "value": "application/json"}, {"key": "Content-Type", "value": "application/json"}, {"key": "Authorization", "value": "Bearer {{employer_token}}"}],
+        "body": {"mode": "raw", "raw": "{\n  \"feedback\": \"Đạt yêu cầu\"\n}"},
+        "url": "{{base_url}}/milestones/{{milestone_id}}/approve"
+      }
+    }
+  ]
+}

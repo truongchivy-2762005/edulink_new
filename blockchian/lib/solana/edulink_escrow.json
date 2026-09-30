@@ -1,0 +1,131 @@
+{
+  "address": "JC8zNCPiuxsCdrH7ffLxEvYX65PSWkGXSUt1rqMZ3KRQ",
+  "version": "0.1.0",
+  "name": "edulink_escrow",
+  "instructions": [
+    {
+      "name": "initializeEscrow",
+      "accounts": [
+        { "name": "employer", "isMut": true, "isSigner": true },
+        { "name": "arbitrator", "isMut": false, "isSigner": false },
+        { "name": "mint", "isMut": false, "isSigner": false },
+        { "name": "escrowAccount", "isMut": true, "isSigner": false },
+        { "name": "vault", "isMut": true, "isSigner": false },
+        { "name": "systemProgram", "isMut": false, "isSigner": false },
+        { "name": "tokenProgram", "isMut": false, "isSigner": false },
+        { "name": "rent", "isMut": false, "isSigner": false }
+      ],
+      "args": [
+        { "name": "jobId", "type": "u64" },
+        { "name": "totalAmount", "type": "u64" },
+        { "name": "totalMilestones", "type": "u8" }
+      ]
+    },
+    {
+      "name": "deposit",
+      "accounts": [
+        { "name": "employer", "isMut": true, "isSigner": true },
+        { "name": "employerTokenAccount", "isMut": true, "isSigner": false },
+        { "name": "escrowAccount", "isMut": true, "isSigner": false },
+        { "name": "vault", "isMut": true, "isSigner": false },
+        { "name": "tokenProgram", "isMut": false, "isSigner": false }
+      ],
+      "args": [
+        { "name": "amount", "type": "u64" }
+      ]
+    },
+    {
+      "name": "assignStudent",
+      "accounts": [
+        { "name": "employer", "isMut": false, "isSigner": true },
+        { "name": "escrowAccount", "isMut": true, "isSigner": false }
+      ],
+      "args": [
+        { "name": "studentPubkey", "type": "publicKey" }
+      ]
+    },
+    {
+      "name": "payoutMilestone",
+      "accounts": [
+        { "name": "authority", "isMut": false, "isSigner": true },
+        { "name": "escrowAccount", "isMut": true, "isSigner": false },
+        { "name": "vault", "isMut": true, "isSigner": false },
+        { "name": "studentTokenAccount", "isMut": true, "isSigner": false },
+        { "name": "tokenProgram", "isMut": false, "isSigner": false }
+      ],
+      "args": [
+        { "name": "milestoneIndex", "type": "u8" },
+        { "name": "amount", "type": "u64" }
+      ]
+    },
+    {
+      "name": "refund",
+      "accounts": [
+        { "name": "authority", "isMut": false, "isSigner": true },
+        { "name": "escrowAccount", "isMut": true, "isSigner": false },
+        { "name": "vault", "isMut": true, "isSigner": false },
+        { "name": "employerTokenAccount", "isMut": true, "isSigner": false },
+        { "name": "tokenProgram", "isMut": false, "isSigner": false }
+      ],
+      "args": []
+    },
+    {
+      "name": "resolveDispute",
+      "accounts": [
+        { "name": "arbitrator", "isMut": false, "isSigner": true },
+        { "name": "escrowAccount", "isMut": true, "isSigner": false },
+        { "name": "vault", "isMut": true, "isSigner": false },
+        { "name": "studentTokenAccount", "isMut": true, "isSigner": false },
+        { "name": "employerTokenAccount", "isMut": true, "isSigner": false },
+        { "name": "tokenProgram", "isMut": false, "isSigner": false }
+      ],
+      "args": [
+        { "name": "studentSplitBps", "type": "u16" },
+        { "name": "employerSplitBps", "type": "u16" }
+      ]
+    },
+    {
+      "name": "closeEscrow",
+      "accounts": [
+        { "name": "employer", "isMut": true, "isSigner": true },
+        { "name": "escrowAccount", "isMut": true, "isSigner": false },
+        { "name": "vault", "isMut": true, "isSigner": false },
+        { "name": "tokenProgram", "isMut": false, "isSigner": false }
+      ],
+      "args": []
+    }
+  ],
+  "accounts": [
+    {
+      "name": "EscrowAccount",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          { "name": "employer", "type": "publicKey" },
+          { "name": "student", "type": "publicKey" },
+          { "name": "arbitrator", "type": "publicKey" },
+          { "name": "mint", "type": "publicKey" },
+          { "name": "vault", "type": "publicKey" },
+          { "name": "jobId", "type": "u64" },
+          { "name": "totalAmount", "type": "u64" },
+          { "name": "remainingAmount", "type": "u64" },
+          { "name": "totalMilestones", "type": "u8" },
+          { "name": "currentMilestone", "type": "u8" },
+          { "name": "status", "type": "u8" },
+          { "name": "bump", "type": "u8" },
+          { "name": "vaultBump", "type": "u8" }
+        ]
+      }
+    }
+  ],
+  "errors": [
+    { "code": 6000, "name": "InvalidAmount", "msg": "Số tiền ký quỹ không hợp lệ." },
+    { "code": 6001, "name": "InvalidMilestone", "msg": "Cột mốc (Milestone) không hợp lệ." },
+    { "code": 6002, "name": "EscrowNotActive", "msg": "Hợp đồng ký quỹ không ở trạng thái hoạt động." },
+    { "code": 6003, "name": "InsufficientFunds", "msg": "Không đủ số dư trong tài khoản ký quỹ." },
+    { "code": 6004, "name": "Unauthorized", "msg": "Bạn không có quyền thực hiện thao tác này." },
+    { "code": 6005, "name": "InvalidSplitPercentage", "msg": "Tỷ lệ phân chia tranh chấp không hợp lệ (tổng phải bằng 10000 bps)." },
+    { "code": 6006, "name": "EscrowNotEmpty", "msg": "Không thể đóng ký quỹ khi số dư vẫn còn trong Vault." },
+    { "code": 6007, "name": "NumericalOverflow", "msg": "Phép tính toán học bị tràn số (Overflow)." }
+  ]
+}

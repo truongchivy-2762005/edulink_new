@@ -1,0 +1,16 @@
+**/.env
+**/.env.*
+!**/.env.example
+**/node_modules/
+**/vendor/
+**/.next/
+**/*.sqlite
+**/*.sqlite3
+**/*.db
+**/*.log
+**/*.tsbuildinfo
+**/*.pem
+**/*.key
+**/.phpunit.result.cache
+**/test-results/
+**/playwright-report/

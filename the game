@@ -1,0 +1,73 @@
+**EduLink Hub đã có nền tảng backend và giao diện sinh viên, nhưng bản mã nguồn hiện tại chưa hoàn thành MVP theo kế hoạch.** Phần còn thiếu lớn nhất là tích hợp frontend–backend, giao dịch Solana thật trên Devnet và luồng tranh chấp hoàn chỉnh.
+
+Mình đã đối chiếu tài liệu với mã nguồn trong `D:\solana-main\solana-main`. Những phần “chưa thấy” dưới đây có thể nằm ở nhánh hoặc máy của thành viên khác. Đây là đánh giá qua mã nguồn, chưa xác nhận bằng chạy ứng dụng và kiểm thử.
+
+Kế hoạch yêu cầu ghép toàn hệ thống ngày **17/9**, hoàn thành ngày **18/9**, tổng duyệt ngày **19/9** và thi ngày **20/9**. :codex-file-citation{path="C:/Users/jaysm/Downloads/EduLink_Hub_Phan_Cong_Tien_Do_Cong_Nghe (1).docx" purpose="source" artifact_kind="document"}
+
+**Đối chiếu từng phần**
+
+| Hạng mục | Hiện trạng trong mã nguồn | Còn thiếu để hoàn thành |
+|---|---|---|
+| Đăng ký, đăng nhập | Backend có Laravel Sanctum; frontend dùng tài khoản và phiên đăng nhập mô phỏng trong localStorage | Gọi API thật, xử lý token, đăng xuất và phân quyền đồng bộ |
+| Giao diện sinh viên | Có dashboard, tìm việc, chi tiết việc, việc đang làm, hồ sơ, thu nhập | Nối dữ liệu thật; form sửa hồ sơ; ứng tuyển và nộp bài theo milestone |
+| Doanh nghiệp, Mentor, Admin | Có một số API nghiệp vụ | Chưa thấy ba dashboard tương ứng trong frontend |
+| Matching Top 5 | Có công thức chấm điểm và lý do phù hợp | Hiển thị trên dashboard doanh nghiệp; dữ liệu demo đủ ứng viên; xác thực nguồn chứng chỉ |
+| Ví Solana | Backend nhận và lưu địa chỉ ví | Kết nối ví thật, cấp nonce và kiểm tra chữ ký chứng minh quyền sở hữu |
+| Escrow | Có API và luồng thanh toán mô phỏng | Chưa thấy chương trình Anchor, IDL, script Mock USDC và tích hợp ký giao dịch |
+| Tranh chấp | Có tạo tranh chấp, nhận phiếu, lưu kết quả | Thực hiện chia/hoàn tiền, cập nhật milestone/job và uy tín |
+| Open Campus | Có trường OCID và chứng chỉ mẫu | Chưa thấy tích hợp OCID Sandbox, đọc/phát hành OCA hoặc OCB |
+| Uy tín | Có cộng điểm khi hoàn thành và lưu lịch sử | Đồng bộ thang điểm; bổ sung xử lý hủy việc, vi phạm và tranh chấp |
+| Kiểm thử, bàn giao | Có Postman, README và test backend cơ bản | Test hai luồng hoàn chỉnh, ba Mentor demo, kiểm chứng Devnet, deploy và video dự phòng |
+
+**Các vấn đề cần xử lý trước tiên**
+
+1. **Frontend đang báo thành công dù chưa thực hiện nghiệp vụ.**  
+   `applyJob()` và `submitWork()` chỉ chờ rồi trả về `{ success: true }`; công việc đang làm, giao dịch và chứng chỉ đều lấy dữ liệu mẫu. Vì vậy thao tác thành công trên màn hình chưa chứng minh dữ liệu được lưu. Xem [API frontend](</D:/solana-main/solana-main/blockchian/lib/api.ts:332>).
+
+   Ngoài ra, frontend nhận danh sách việc như một mảng trực tiếp, trong khi backend trả dữ liệu có lớp `success/message/data` và phân trang. **Chỉ điền địa chỉ API sẽ chưa đủ để tích hợp.**
+
+2. **Blockchain hiện chưa đáp ứng yêu cầu ký quỹ Devnet.**  
+   Backend có chế độ mock và hàm kiểm tra giao dịch, nhưng phần kiểm tra Devnet mới xác nhận giao dịch thành công và sự xuất hiện của program ID. Chưa đối chiếu đầy đủ mint, số tiền, người gửi/nhận, escrow và milestone. Xem [SolanaService](</D:/solana-main/solana-main/EduLink Hub/app/Services/SolanaService.php:20>).
+
+   **Mock USDC là token thử nghiệm được giao dịch thật trên Devnet; chuỗi `mock_deposit_...` chỉ là dữ liệu mô phỏng.** Hai thứ này cần phân biệt rõ khi nghiệm thu.
+
+3. **Luồng tranh chấp dừng ở “lưu phán quyết”.**  
+   `resolve()` cập nhật trạng thái tranh chấp thành `resolved`, chưa gọi giải ngân/hoàn tiền hay cập nhật uy tín. Admin còn có thể nhập tỷ lệ riêng để thay kết quả trung bình của Mentor; nhóm cần chốt quyền này có đúng nghiệp vụ không. Xem [DisputeController](</D:/solana-main/solana-main/EduLink Hub/app/Http/Controllers/Api/DisputeController.php:67>).
+
+4. **Quyền Mentor và quyền sở hữu ví chưa được kiểm soát đủ.**  
+   API đăng ký hiện cho người dùng tự chọn vai trò `mentor`, trong khi Mentor được bỏ phiếu tranh chấp. API gắn ví chỉ kiểm tra chuỗi địa chỉ, chưa xác minh chữ ký. Cần giới hạn Mentor do Admin cấp và bổ sung nonce/chữ ký. Xem [đăng ký](</D:/solana-main/solana-main/EduLink Hub/app/Http/Controllers/Api/AuthController.php:14>) và [gắn ví](</D:/solana-main/solana-main/EduLink Hub/app/Http/Controllers/Api/ProfileController.php:35>).
+
+5. **Matching và chứng nhận còn dễ tạo kết quả sai lệch.**  
+   Chỉ cần `sbt_data` không rỗng là được cộng 20 điểm chứng chỉ, nhưng trường này đang cho người dùng tự cập nhật. Giao diện lại mô tả chứng chỉ mẫu là chứng chỉ on-chain. Cần phân biệt chứng chỉ đã xác minh với dữ liệu demo. Xem [công thức matching](</D:/solana-main/solana-main/EduLink Hub/app/Services/MatchingService.php:24>).
+
+**Bản kế hoạch còn thiếu những gì?**
+
+Phân công đã rõ, nhưng cần bổ sung các quyết định sau để các thành viên ghép được sản phẩm:
+
+- **Bảng tiến độ thực tế:** mỗi đầu việc có trạng thái, người chịu trách nhiệm, vướng mắc và bằng chứng như PR, màn hình chạy hoặc transaction hash.
+- **Hợp đồng API thống nhất:** cấu trúc response, tên trường, kiểu ID, trạng thái job/milestone và lỗi. Hiện frontend và backend chưa khớp.
+- **Quy trình tuyển chọn:** doanh nghiệp chọn ứng viên hay sinh viên nhận trước được việc? Code hiện tại tự nhận việc ngay khi gọi `apply`.
+- **Quy tắc tiền và tranh chấp:** phí nền tảng, điều kiện hoàn tiền, số tiền còn lại sau từng milestone, cách tổng hợp phiếu và quyền can thiệp của Admin.
+- **Tiêu chí nghiệm thu:** thao tác nào phải chạy thật, phần nào được mô phỏng, bằng chứng cần lưu.
+- **Cấu hình triển khai và dự phòng:** người phụ trách deploy, URL, quy trình khởi động/reset dữ liệu, phục hồi khi backend hoặc Devnet lỗi.
+
+Có một điểm lệch tài liệu: frontend thực tế dùng **Next.js**, trong khi kế hoạch ghi **React + Vite**. Nên cập nhật tài liệu theo quyết định của nhóm; việc đổi framework lúc sát hạn không giải quyết được các điểm thiếu chính.
+
+**Phân công phần việc còn lại đề xuất**
+
+| Thành viên | Việc ưu tiên |
+|---|---|
+| **Vỹ** | Thay đăng nhập và nghiệp vụ mock bằng API; sửa hồ sơ; nộp theo milestone; hiển thị lỗi và kết quả thật |
+| **Khang** | Chốt cấu trúc API; bổ sung API phục vụ dashboard/lịch sử; hạn chế quyền Mentor; hoàn thiện trạng thái nghiệp vụ; tích hợp và deploy |
+| **Ngữ** | Bàn giao Anchor + IDL + program ID; Mock USDC; ký ví; deposit/release/refund và xử lý kết quả tranh chấp trên Devnet |
+| **Bảo** | Hoàn thành dashboard doanh nghiệp và Mentor trước, rồi Admin tối thiểu; nối đăng việc, nghiệm thu và bỏ phiếu |
+| **Hiếu** | Nối matching; xác định chứng chỉ đã xác minh; OCID Sandbox; thống nhất điểm uy tín và dữ liệu chứng nhận demo |
+| **Cả nhóm** | Chạy hai kịch bản xuyên suốt, ghi bằng chứng, chuẩn bị video và bản sao dữ liệu |
+
+**Chỉ nên đánh dấu hoàn thành khi đạt các điều kiện này:**
+
+- Luồng thuận lợi chạy từ **đăng nhập → đăng việc → ký quỹ → nhận việc → nộp bài → duyệt → nhận token → cập nhật uy tín**.
+- Luồng tranh chấp chạy từ **gửi bằng chứng → ba Mentor bỏ phiếu → quyết định → chia/hoàn token → cập nhật trạng thái và uy tín**.
+- Hai luồng dùng cùng một hệ thống dữ liệu; tải lại trang vẫn giữ đúng kết quả.
+- Có ít nhất ba Mentor và đủ ứng viên để trình diễn Top 5. Seeder hiện mới tạo **một Mentor và một sinh viên**.
+- Có bản chạy ổn định, tài khoản demo, ví đủ SOL trả phí và Mock USDC, video dự phòng; tổng duyệt ba lần theo kế hoạch.

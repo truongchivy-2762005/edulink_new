@@ -1,0 +1,41 @@
+.page { display: flex; flex-direction: column; gap: 24px; max-width: 900px; }
+.header { animation: fadeInUp 0.4s ease forwards; }
+.title { font-size: 24px; font-weight: 800; margin-bottom: 4px; letter-spacing: -0.02em; }
+.subtitle { font-size: 14px; color: var(--text-secondary); }
+
+/* Summary cards */
+.summaryCards { display: grid; grid-template-columns: 1.5fr repeat(3, 1fr); gap: 16px; animation: fadeInUp 0.4s ease 0.1s both; }
+.summaryCard { padding: 24px; display: flex; flex-direction: column; }
+.mainBalance { background: linear-gradient(135deg, rgba(153,69,255,0.15), rgba(20,241,149,0.08)) !important; }
+.balanceLabel { font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 8px; }
+.balanceNum { font-size: 52px; font-weight: 900; font-family: var(--font-mono); line-height: 1; background: var(--grad-primary); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+.balanceToken { font-size: 14px; color: var(--text-muted); margin-top: 4px; }
+.cardIcon { width: 40px; height: 40px; border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center; margin-bottom: 12px; }
+.cardValue { font-size: 28px; font-weight: 800; font-family: var(--font-mono); margin-bottom: 4px; }
+.cardLabel { font-size: 12px; color: var(--text-secondary); }
+
+/* Chart */
+.chartCard { padding: 24px; animation: fadeInUp 0.4s ease 0.2s both; }
+.chartTitle { font-size: 16px; font-weight: 700; margin-bottom: 20px; }
+.chartWrap {}
+
+/* Transactions */
+.txSection { animation: fadeInUp 0.4s ease 0.3s both; }
+.txTitle { font-size: 18px; font-weight: 700; margin-bottom: 16px; }
+.txList { display: flex; flex-direction: column; gap: 8px; }
+.txCard { padding: 16px 20px; display: flex; align-items: center; gap: 14px; transition: all var(--transition-fast); }
+.txIcon { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.txEarned { background: rgba(20,241,149,0.15); color: var(--color-secondary); }
+.txWithdrawn { background: rgba(255,77,109,0.15); color: var(--color-danger); }
+.txISA { background: rgba(255,215,0,0.15); color: var(--color-accent); }
+.txInfo { flex: 1; min-width: 0; }
+.txDesc { font-size: 14px; font-weight: 600; margin-bottom: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.txMeta { display: flex; align-items: center; gap: 6px; font-size: 11px; color: var(--text-muted); flex-wrap: wrap; }
+.txHash { display: flex; align-items: center; gap: 4px; color: var(--color-primary); transition: opacity var(--transition-fast); }
+.txHash:hover { opacity: 0.8; }
+.txAmount { font-size: 16px; font-weight: 700; font-family: var(--font-mono); white-space: nowrap; }
+.txPos { color: var(--color-secondary); }
+.txNeg { color: var(--color-danger); }
+
+@media (max-width: 900px) { .summaryCards { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 560px) { .summaryCards { grid-template-columns: 1fr; } }
